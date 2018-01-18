@@ -10,7 +10,8 @@ let EVENTS = {
 
 function BuildNotifierPlugin(options) {
   this.settings = {
-    port: options.port || 3003
+    port:  options.port  || 3003,
+    debug: options.debug || false
   };
 
   this.state = {
@@ -19,7 +20,11 @@ function BuildNotifierPlugin(options) {
 }
 
 BuildNotifierPlugin.prototype.emit = function (eventName, payload) {
-  sse.send(JSON.stringify(payload), eventName)
+  if (this.settings.debug) {
+    console.log('[BuildNotifierPlugin] emitting an event:', eventName);
+  }
+
+  sse.send(JSON.stringify(payload), eventName);
 };
 
 BuildNotifierPlugin.prototype.setup = function() {
