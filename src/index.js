@@ -44,7 +44,7 @@ BuildNotifierPlugin.prototype.setup = function() {
 };
 
 BuildNotifierPlugin.prototype.apply = function(compiler) {
-  compiler.plugin('done', function() {
+  compiler.plugin('done', () => {
 
     if (!this.state.setupIsDone) {
       this.setup();
