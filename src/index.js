@@ -8,7 +8,7 @@ let EVENTS = {
   BUILD: 'BUILD'
 };
 
-function ReloadPlugin(options) {
+function BuildNotifierPlugin(options) {
   this.settings = {
     port: options.port || 3003
   };
@@ -18,11 +18,11 @@ function ReloadPlugin(options) {
   };
 }
 
-ReloadPlugin.prototype.emit = function (eventName, payload) {
+BuildNotifierPlugin.prototype.emit = function (eventName, payload) {
   sse.send(JSON.stringify(payload), eventName)
 };
 
-ReloadPlugin.prototype.setup = function() {
+BuildNotifierPlugin.prototype.setup = function() {
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -38,7 +38,7 @@ ReloadPlugin.prototype.setup = function() {
   this.state.setupIsDone = true;
 };
 
-ReloadPlugin.prototype.apply = function(compiler) {
+BuildNotifierPlugin.prototype.apply = function(compiler) {
   compiler.plugin('done', function() {
 
     if (!this.state.setupIsDone) {
@@ -49,4 +49,4 @@ ReloadPlugin.prototype.apply = function(compiler) {
   });
 };
 
-module.exports = ReloadPlugin;
+module.exports = BuildNotifierPlugin;
